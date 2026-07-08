@@ -1,0 +1,50 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions for validating document fields
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidCategory(data) {
+      return data.keys().hasAll(['id', 'name', 'color'])
+        && data.keys().size() == 3
+        && data.id is string && data.id.size() <= 100
+        && data.name is string && data.name.size() <= 100
+        && data.color is string && data.color.size() <= 100;
+    }
+
+    function isValidLink(data) {
+      return data.keys().hasAll(['id', 'title', 'url', 'description', 'category', 'tags', 'createdAt'])
+        && (data.keys().size() == 7 || (data.keys().size() == 8 && data.keys().hasAll(['updatedAt'])))
+        && data.id is string && data.id.size() <= 100
+        && data.title is string && data.title.size() <= 200
+        && data.url is string && data.url.size() <= 1000
+        && data.description is string && data.description.size() <= 2000
+        && data.category is string && data.category.size() <= 100
+        && data.tags is list && data.tags.size() <= 20
+        && data.createdAt is string && data.createdAt.size() <= 50;
+    }
+
+    // Categories Collection - public reads, validated writes
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow create, update: if isValidId(categoryId) && isValidCategory(request.resource.data);
+      allow delete: if isValidId(categoryId);
+    }
+
+    // Links Collection - public reads, validated writes
+    match /links/{linkId} {
+      allow read: if true;
+      allow create, update: if isValidId(linkId) && isValidLink(request.resource.data);
+      allow delete: if isValidId(linkId);
+    }
+  }
+}
+

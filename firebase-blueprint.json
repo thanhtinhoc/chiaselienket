@@ -1,0 +1,40 @@
+{
+  "entities": {
+    "Link": {
+      "title": "Link",
+      "description": "A saved bookmark link",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique identifier of the link" },
+        "title": { "type": "string", "description": "The title of the website" },
+        "url": { "type": "string", "description": "The URL address of the link" },
+        "description": { "type": "string", "description": "A short description of the link" },
+        "category": { "type": "string", "description": "The category of the link" },
+        "tags": { "type": "array", "description": "List of tags associated with the link" },
+        "createdAt": { "type": "string", "description": "ISO timestamp when the link was created" }
+      },
+      "required": ["id", "title", "url", "category", "createdAt"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "A preset or custom category option",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique identifier of the category" },
+        "name": { "type": "string", "description": "The display name of the category" },
+        "color": { "type": "string", "description": "The Tailwind style representation of the category" }
+      },
+      "required": ["id", "name", "color"]
+    }
+  },
+  "firestore": {
+    "links": {
+      "schema": "Link",
+      "description": "All bookmark links saved by users"
+    },
+    "categories": {
+      "schema": "Category",
+      "description": "All custom and preset categories"
+    }
+  }
+}

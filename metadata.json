@@ -1,0 +1,6 @@
+{
+  "name": "Kho Liên Kết Của Tôi",
+  "description": "Ứng dụng web hiện đại giúp lưu trữ, quản lý và chia sẻ các liên kết tiện ích một cách dễ dàng và nhanh chóng.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

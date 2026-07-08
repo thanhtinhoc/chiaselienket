@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+  /* High contrast beautiful deep blue palette for light mode */
+  --color-sage: #3b82f6;         /* Vibrant blue accent */
+  --color-sage-dark: #1d4ed8;    /* Secondary darker blue accent */
+  --color-sage-deep: #93c5fd;    /* Bright light blue text/accent highlight */
+  --color-sage-light: #152238;   /* Deep slate-blue for subtle badges */
+  --color-sage-border: #1e2f4c;  /* Border color in light mode */
+  --color-sage-cream: #0a1128;   /* Primary dark blue background */
+  
+  /* High contrast beautiful deep blue palette for dark mode */
+  --color-sage-dark-bg: #030712;      /* Cosmic midnight dark blue bg */
+  --color-sage-dark-card: #0b1329;    /* Dark navy card */
+  --color-sage-dark-border: #1e293b;  /* Dark navy border */
+  --color-sage-dark-input: #070a13;   /* Input field dark background */
+}
