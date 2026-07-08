@@ -280,14 +280,16 @@ export default function App() {
     }
 
     if (editingLink) {
-      // Editing Firestore
+      // Editing Firestore - Phải truyền đầy đủ 'id' và 'createdAt' để đảm bảo đi qua bộ quy tắc bảo mật (firestore.rules)
       try {
         await updateDoc(doc(db, 'links', editingLink.id), { 
+          id: editingLink.id,
           title: linkData.title,
           url: linkData.url,
           description: linkData.description,
           category: linkData.category,
           tags: linkData.tags,
+          createdAt: editingLink.createdAt || new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         });
         addToast('Cập nhật liên kết thành công!', 'success');
@@ -295,9 +297,11 @@ export default function App() {
         handleFirestoreError(error, OperationType.UPDATE, `links/${editingLink.id}`);
       }
     } else {
-      // Adding New Firestore with addDoc
+      // Adding New Firestore with addDoc - Bắt buộc phải có thuộc tính 'id' trong payload để đi qua bộ quy tắc bảo mật (firestore.rules)
       try {
+        const tempId = doc(collection(db, 'links')).id;
         const newDocPayload = {
+          id: tempId,
           title: linkData.title,
           url: linkData.url,
           description: linkData.description,
@@ -347,6 +351,7 @@ export default function App() {
   const testFirebaseConnection = async () => {
     try {
       const testDoc = {
+        id: doc(collection(db, 'links')).id, // Thêm id để đi qua rules kiểm tra của Firestore
         title: 'Kiểm tra kết nối Firebase',
         url: 'https://firebase.google.com',
         description: `Kiểm tra thành công lúc ${new Date().toLocaleTimeString()} (Ứng dụng kết nối trực tiếp)`,

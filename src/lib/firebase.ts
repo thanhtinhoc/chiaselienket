@@ -14,16 +14,33 @@ import {
 } from 'firebase/firestore';
 
 // ============================================================================
+// HÀM ĐỌC BIẾN MÔI TRƯỜNG LINH HOẠT CHO CẢ VITE VÀ NEXT.JS (DEPLOY VERCEL)
+// ============================================================================
+const getEnv = (key: string): string => {
+  if (typeof import.meta !== 'undefined' && import.meta.env) {
+    if (import.meta.env[`VITE_FIREBASE_${key}`]) return import.meta.env[`VITE_FIREBASE_${key}`];
+    if (import.meta.env[`NEXT_PUBLIC_FIREBASE_${key}`]) return import.meta.env[`NEXT_PUBLIC_FIREBASE_${key}`];
+    if (import.meta.env[key]) return import.meta.env[key];
+  }
+  if (typeof process !== 'undefined' && process.env) {
+    if (process.env[`VITE_FIREBASE_${key}`]) return process.env[`VITE_FIREBASE_${key}`] as string;
+    if (process.env[`NEXT_PUBLIC_FIREBASE_${key}`]) return process.env[`NEXT_PUBLIC_FIREBASE_${key}`] as string;
+    if (process.env[key]) return process.env[key] as string;
+  }
+  return '';
+};
+
+// ============================================================================
 // BẠN CÓ THỂ DÁN TRỰC TIẾP CẤU HÌNH FIREBASE CONFIG CỦA BẠN VÀO ĐÂY:
-// (Thay thế các giá trị dưới đây bằng cấu hình lấy từ Firebase Console của bạn)
+// (Nếu có biến môi trường trên Vercel/Local, hệ thống sẽ ưu tiên dùng biến môi trường)
 // ============================================================================
 const firebaseConfig = {
-  apiKey: "AIzaSyBNF-j5VnyYsgek0JXOLy1rYFKb3zJV-oU",
-  authDomain: "chiaselienket-68a09.firebaseapp.com",
-  projectId: "chiaselienket-68a09",
-  storageBucket: "chiaselienket-68a09.firebasestorage.app",
-  messagingSenderId: "86654994209",
-  appId: "1:86654994209:web:351083dc280b4bcefb6060"
+  apiKey: getEnv('API_KEY') || "AIzaSyBNF-j5VnyYsgek0JXOLy1rYFKb3zJV-oU",
+  authDomain: getEnv('AUTH_DOMAIN') || "chiaselienket-68a09.firebaseapp.com",
+  projectId: getEnv('PROJECT_ID') || "chiaselienket-68a09",
+  storageBucket: getEnv('STORAGE_BUCKET') || "chiaselienket-68a09.firebasestorage.app",
+  messagingSenderId: getEnv('MESSAGING_SENDER_ID') || "86654994209",
+  appId: getEnv('APP_ID') || "1:86654994209:web:351083dc280b4bcefb6060"
 };
 // ============================================================================
 
